@@ -28,7 +28,7 @@ conn = sqlite3.connect('db_Assignment.db')
 
 with conn:
     cur = conn.cursor()
-    cur.execute("INSERT INTO tbl_assignment(col_fileName) VALUES (?)", (files_txt))
+    cur.execute("INSERT INTO tbl_assignment(col_fileName) VALUES (?)", (files_txt,))
     conn.commit()
 conn.close()
 

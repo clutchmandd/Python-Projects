@@ -3,6 +3,28 @@ import tkinter as tk
 
 import webbrowser
 
+def submit_func(self):
+
+        # retreive user's entered text
+
+        userEntry = self.txt_wpText.get()
+        
+        # write Basic HTML Web Page with Python
+
+        f = open('BasicHTML.html','w')
+
+        message = """<html>
+        <body><h1>{}</h1></body>
+        </html>""".format(userEntry)
+
+        f.write(message)
+        f.close()
+
+        new = 2
+
+        filename = 'BasicHTML.html'
+        webbrowser.open(filename, new=new)
+
 # tkinter GUI
 class ParentWindow(Frame):
     def __init__(self, master, *args, **kwargs):
@@ -13,24 +35,10 @@ class ParentWindow(Frame):
         self.master.title("Web Page Automation Demo")
         self.master.configure(bg='#F0F0F0')
         self.master.protocol(lambda: submit_func(self))
+        self.load_gui()
         arg = self.master
 
-    def submit_func(self):
-        
-    # write Basic HTML Web Page with Python
-
-        f = open('BasicHTML.html','w')
-
-        message = """<html>
-        <body><h1><%('{}'.format(self.txt_wpText))%></h1></body>
-        </html>"""
-
-        f.write(message)
-        f.close()
-
-
-        filename = 'file:///Users/dixon/Documents/GitHub/Python-Projects/Web_Page_Generator/' + 'BasicHTML.html'
-        webbrowser.open_new_tab(filename)
+    
         
     def load_gui(self):
 

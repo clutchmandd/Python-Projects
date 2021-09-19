@@ -1,13 +1,86 @@
 import shutil
 import os
+import tkinter as tk
+from tkinter import *
+from tkinter import messagebox, filedialog
 
-# set where the source of the files are
-source = '/Users/dixon/Documents/GitHub/Python-Projects/File_Transfer_Assignment/Folder_A/'
 
-#set the destination path to Folder_B
-destination = '/Users/dixon/Documents/GitHub/Python-Projects/File_Transfer_Assignment/Folder_B/'
-files = os.listdir(source)
+# Defining CreateWidgets() function to create necessary tkinter widgets
+def CreateWidgets():
+    link_Label = Label(root, text='Select the File to Copy: ', bg='lightgray')
+    link_Label.grid(row=1, column=0, pady=5, padx=5)
 
-for i in files:
-    # moving the files represented by 'i' to their new destination
-    shutil.move(source+i,destination)
+    root.sourceText = Entry(root, width=50, textvariable = sourceLocation)
+    root.sourceText.grid(row=1, column=1, pady=5, padx=5, columnspan=2)
+
+    source_browseButton = Button(root, text='Browse', command = SourceBrowse, width=15)
+    source_browseButton.grid(row=1, column=3, pady=5, padx=5)
+
+    destinationLabel = Label(root, text='Select The Destination: ', bg='lightgray')
+    destinationLabel.grid(row=2, column=0, pady=5, padx=5)
+
+    root.destinationText = Entry(root, width=50, textvariable = destinationLocation)
+    root.destinationText.grid(row=2, column=1, pady=5, padx=5, columnspan=2)
+
+    dest_browseButton = Button(root, text='Browse', command = DestinationBrowse, width = 15)
+    dest_browseButton.grid(row=2, column=3, pady=5, padx=5)
+
+    archiveButton = Button(root, text='Archive File', command = ArchiveFile, width=15)
+    archiveButton.grid(row=3, column=1, pady=5, padx=5)
+
+def SourceBrowse():
+
+    # Opening the file-dialog directory prompting the user to select files to copy
+    # using the filedialog.askopenfilenames() method. Setting the initialdir argument.
+    # Converting the selection to list using list()
+    root.files_list = list(filedialog.askopenfilenames(initialdir='/FolderA/'))
+
+    # Displaying the selected files in the root.sourceText Entry
+    root.sourceText.insert('1', root.files_list)
+
+def DestinationBrowse():
+
+    # Opening the file-dialog directory prompting the user to select the destination folder.
+    destinationdirectory = filedialog.askdirectory(initialdir='/FolderB/')
+
+    # Displaying the selected directory in the root.destinationText Entry
+    root.destinationText.insert('1', destinationdirectory)
+
+def ArchiveFile():
+
+    # Retrieving the source file selected by the user in the SourceBrowse() and storing it
+    # in a variable named files_list
+    files_list = root.files_list
+
+    # Retrieving the destination location from the textvariable using destinationLocation.get()
+    destination_location = destinationLocation.get()
+
+    # Looping through the files present in the list
+    for f in files_list:
+
+        # Move the file to the destination using the move() of shutil module
+        shutil.move(f, destination_location)
+
+    messagebox.showinfo('SUCCESSFULL!')
+
+    
+# Creating object of tk class
+root = tk.Tk()
+root.geometry('830x120')
+root.title('File-Transfer App')
+root.config(background = 'lightgray')
+
+# Creating tkinter variable
+sourceLocation = StringVar()
+destinationLocation = StringVar()
+
+# Calling the CreateWidgets() function
+CreateWidgets()
+
+# Defining infinite loop
+root.mainloop()
+
+
+
+
+

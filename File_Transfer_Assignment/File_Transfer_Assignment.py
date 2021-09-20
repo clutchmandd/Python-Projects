@@ -1,3 +1,4 @@
+import time
 import shutil
 import os
 import tkinter as tk
@@ -33,7 +34,7 @@ def SourceBrowse():
     # Opening the file-dialog directory prompting the user to select files to copy
     # using the filedialog.askopenfilenames() method. Setting the initialdir argument.
     # Converting the selection to list using list()
-    root.files_list = list(filedialog.askopenfilenames(initialdir='/FolderA/'))
+    root.files_list = filedialog.askdirectory(initialdir='/FolderA/')
 
     # Displaying the selected files in the root.sourceText Entry
     root.sourceText.insert('1', root.files_list)
@@ -46,20 +47,19 @@ def DestinationBrowse():
     # Displaying the selected directory in the root.destinationText Entry
     root.destinationText.insert('1', destinationdirectory)
 
-def ArchiveFile():
+SECONDS_IN_DAY = 24 * 60 * 60
 
-    # Retrieving the source file selected by the user in the SourceBrowse() and storing it
-    # in a variable named files_list
-    files_list = root.files_list
+now = time.time()
+before = now - SECONDS_IN_DAY
 
-    # Retrieving the destination location from the textvariable using destinationLocation.get()
-    destination_location = destinationLocation.get()
+def ArchiveFile(fname):
+    return os.path.getmtime(fname)
 
-    # Looping through the files present in the list
-    for f in files_list:
-
-        # Move the file to the destination using the move() of shutil module
-        shutil.move(f, destination_location)
+    for fname in os.listdir(sourceLocation):
+        sourceLocation_fname = os.path.join(sourceLoction, fname)
+        if last_mod_time(sourLocation_fname) > before:
+                destinationLocation_fname = os.path.join(destinationLocation, fname)
+                shutil.move(sourceLocation_fname, destinationLocation_fname)
 
     messagebox.showinfo('SUCCESSFULL!')
 

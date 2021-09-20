@@ -11,7 +11,7 @@ def CreateWidgets():
     link_Label = Label(root, text='Select the File to Copy: ', bg='lightgray')
     link_Label.grid(row=1, column=0, pady=5, padx=5)
 
-    root.sourceText = Entry(root, width=50, textvariable = sourceLocation)
+    root.sourceText = Entry(root, width=50)
     root.sourceText.grid(row=1, column=1, pady=5, padx=5, columnspan=2)
 
     source_browseButton = Button(root, text='Browse', command = SourceBrowse, width=15)
@@ -20,7 +20,7 @@ def CreateWidgets():
     destinationLabel = Label(root, text='Select The Destination: ', bg='lightgray')
     destinationLabel.grid(row=2, column=0, pady=5, padx=5)
 
-    root.destinationText = Entry(root, width=50, textvariable = destinationLocation)
+    root.destinationText = Entry(root, width=50)
     root.destinationText.grid(row=2, column=1, pady=5, padx=5, columnspan=2)
 
     dest_browseButton = Button(root, text='Browse', command = DestinationBrowse, width = 15)
@@ -47,19 +47,21 @@ def DestinationBrowse():
     # Displaying the selected directory in the root.destinationText Entry
     root.destinationText.insert('1', destinationdirectory)
 
-SECONDS_IN_DAY = 24 * 60 * 60
 
-now = time.time()
-before = now - SECONDS_IN_DAY
+def ArchiveFile():
+    SECONDS_IN_DAY = 24 * 60 * 60
 
-def ArchiveFile(fname):
-    return os.path.getmtime(fname)
+    now = time.time()
+    before = now - SECONDS_IN_DAY
+    sourceFolder = root.sourceText.get()
+    destinationFolder = root.destinationText.get()
 
-    for fname in os.listdir(sourceLocation):
-        sourceLocation_fname = os.path.join(sourceLoction, fname)
-        if last_mod_time(sourLocation_fname) > before:
-                destinationLocation_fname = os.path.join(destinationLocation, fname)
-                shutil.move(sourceLocation_fname, destinationLocation_fname)
+    for file in os.listdir(root.sourceText.get()):
+        sourceLocation = os.path.join(sourceFolder, file)
+        mod_time = os.path.getmtime(sourceLocation)
+        if mod_time > before:
+                destinationLocation_file = os.path.join(destinationFolder, file)
+                shutil.move(sourceLocation, destinationLocation_file)
 
     messagebox.showinfo('SUCCESSFULL!')
 
@@ -69,10 +71,6 @@ root = tk.Tk()
 root.geometry('830x120')
 root.title('File-Transfer App')
 root.config(background = 'lightgray')
-
-# Creating tkinter variable
-sourceLocation = StringVar()
-destinationLocation = StringVar()
 
 # Calling the CreateWidgets() function
 CreateWidgets()
